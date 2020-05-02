@@ -12,6 +12,9 @@ class _NameDropdownState extends State<NameDropdown> {
   
   List listOfNames = [];
 
+//Where we are pulling the values from the database
+//Have to pull a future instance, and then later take a snapshot of it
+
   Future<List<String>> pullValues() async {
     List<String> listNames = [];
     const url2 = 'https://projectworkflow.firebaseio.com/Evaluators.json';
@@ -19,6 +22,7 @@ class _NameDropdownState extends State<NameDropdown> {
     Map<String, dynamic> fetchedEvaluatorsList2 = json.decode(response2.body);
     dynamic valuesFromMap2 = fetchedEvaluatorsList2.values.toList();
     valuesFromMap2.forEach((k) {
+      //Where the info is coming from, grabbing firstname and lastname within the database
       listNames.add('${k['firstName']} ${k['lastName']}');
     });    
     return listNames;
@@ -27,9 +31,12 @@ class _NameDropdownState extends State<NameDropdown> {
 
   @override
   Widget build(BuildContext context) {
+     //Had to call the whole thing as a future builder, in order to pull data from the databse.
     return FutureBuilder(
       future: pullValues(),
       builder: (context, snapshot) {
+         //Snapshot is what the future builder, and the current values stored is seeing. It takes a single
+        //instance of what it sees and displays.
         if (snapshot.hasData) {
           return Container(
             width: MediaQuery.of(context).size.width * 0.2,
@@ -58,6 +65,8 @@ class _NameDropdownState extends State<NameDropdown> {
                     });
                   },
                   items:
+                   //Where the values come from, key element here. Ususally is a list of strings,
+                  //instead we replaced it with snapshot data map. turned out hella sick
                       snapshot.data.map<DropdownMenuItem<String>>((
                     String value,
                   ) {
@@ -71,6 +80,7 @@ class _NameDropdownState extends State<NameDropdown> {
             ),
           );
         } else if (snapshot.hasError) {
+          //The error that seems to be reoccuring
           print("Error : ${snapshot.error}");
         }
         return CircularProgressIndicator();

@@ -22,9 +22,9 @@ class EvalCustomForm extends StatefulWidget {
 }
 
 class EvalCustomFormState extends State<EvalCustomForm> {
-  Duration tck = new Duration(seconds: 1);
-  final _evalFormKey = GlobalKey<FormState>();
-  var _evalFirstName, _evalLastName, _evalEmail, _evalWeight;
+  Duration tck = new Duration(seconds: 1); //used to delay the poping of the given pop up
+  final _evalFormKey = GlobalKey<FormState>(); 
+  var _evalFirstName, _evalLastName, _evalEmail, _evalWeight; //used to hold the evaluator information from the input fields
 
   @override
   Widget build(BuildContext context) {
@@ -121,8 +121,8 @@ class EvalCustomFormState extends State<EvalCustomForm> {
                   hintText: 'Email'),
               //need to add an if statement to check if the email is already in the
               //database
-              //the validator here will check if the field is empty and that the name
-              //has a proper form.              
+              //the validator here will check if the field is empty and that the email is valid
+              //and has a proper form.              
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Email field cannot be empty';
@@ -145,6 +145,8 @@ class EvalCustomFormState extends State<EvalCustomForm> {
                   ),
                   hintText: 'Weight (number 0 - 1)'),
               //need to check if input is a number
+              //the validator here will check if the field is empty and that a number is entered
+              //and has a proper form of two decimal places 
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Weight field cannot be empty';
@@ -170,6 +172,8 @@ class EvalCustomFormState extends State<EvalCustomForm> {
                   _evalFormKey.currentState.save();
                   addEvaluator();
                   successPopUp();
+                  //the timer is used to pop the pop up once the 
+                  //success pop up is finished and pops
                   Timer(
                     tck,
                     () {

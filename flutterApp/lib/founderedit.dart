@@ -14,7 +14,9 @@ class FounderEdit extends StatefulWidget {
 class FounderEditState extends State<FounderEdit> {
   Iterable<String> keys; //used to find the correct founder to edit
 
-  //fetches the data from the database
+  //fetches the founder data from the Google Firebase using the http request get
+  //This is saved into a list of founders that will be used when the function is 
+  //called by the future builder.
   Future<List<Founder>> fetchedFounder() async {
     const url = 'https://projectworkflow.firebaseio.com/Founder.json';
     final response = await http.get(url);
@@ -32,6 +34,9 @@ class FounderEditState extends State<FounderEdit> {
 
   //edits the current founder selected
   //http.patch used to make changes to existing data
+  //the function takes in key: used to determine the index of the 
+  //founder being edited in the database, editedName: used to update
+  //the founders name in the database.
   Future<void> editFounder(String key, String editedName) async {
     String url =
         'https://projectworkflow.firebaseio.com/Founder/' + key + '.json';
@@ -52,7 +57,7 @@ class FounderEditState extends State<FounderEdit> {
       width: MediaQuery.of(context).size.width * .25,
       color: Colors.grey[350],
       child: FutureBuilder(
-        future: fetchedFounder(),
+        future: fetchedFounder(), //call to the future function is done here
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Scrollbar(

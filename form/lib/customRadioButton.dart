@@ -3,22 +3,24 @@ import './questionaire.dart';
 
 class CustomRadioButton extends StatefulWidget {
   final int index;
-
   CustomRadioButton(this.index, {Key key}) : super(key: key);
   @override
   _CustomRadioButtonState createState() => _CustomRadioButtonState(index);
 }
 
+//Used to record the score that the evaluator puts in
+//This is a template, used by all of hte individual calls
 scoreValue(int score) {
   if (score == 1) {
     return Container(
       constraints: BoxConstraints(minWidth: 110, maxWidth: 200),
+      //Each rating has a text associated with it, and colors
       child: Text(
         "Poor",
         style: TextStyle(
           shadows: [
             Shadow(
-              blurRadius:  1.5,
+              blurRadius: 1.5,
               color: Colors.black,
               offset: Offset(2, 1),
             ),
@@ -36,12 +38,12 @@ scoreValue(int score) {
         style: TextStyle(
           shadows: [
             Shadow(
-              blurRadius:  0.5,
+              blurRadius: 0.5,
               color: Colors.black,
               offset: Offset(1.5, 1.5),
             ),
           ],
-          color:Colors.orange,
+          color: Colors.orange,
           fontSize: 20,
         ),
       ),
@@ -54,12 +56,12 @@ scoreValue(int score) {
         style: TextStyle(
           shadows: [
             Shadow(
-              blurRadius:  0.5,
+              blurRadius: 0.5,
               color: Colors.black,
               offset: Offset(1, 1),
             ),
           ],
-           fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.bold,
           color: Colors.yellow,
           fontSize: 20,
         ),
@@ -73,7 +75,7 @@ scoreValue(int score) {
         style: TextStyle(
           shadows: [
             Shadow(
-              blurRadius:  0.5,
+              blurRadius: 0.5,
               color: Colors.black,
               offset: Offset(1.5, 1.5),
             ),
@@ -122,9 +124,11 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
   _CustomRadioButtonState(this.index);
   @override
   Widget build(BuildContext context) {
+    //Where the values area all lined up, and called
     return Row(
       children: <Widget>[
         scoreValue(selectedValue),
+        //Each call is corresponding to each value
         Radio(
           value: 1,
           groupValue: selectedValue,
@@ -136,6 +140,7 @@ class _CustomRadioButtonState extends State<CustomRadioButton> {
             });
           },
         ),
+        //Each value, associates with the respective color and value located above. 
         Radio(
           value: 2,
           groupValue: selectedValue,
