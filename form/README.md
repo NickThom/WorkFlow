@@ -1,6 +1,6 @@
 # form
 
-A new Flutter project.
+The form page for the StartUpNV senior project.
 
 ## Getting Started
 

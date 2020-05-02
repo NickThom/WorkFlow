@@ -1,3 +1,4 @@
+//template class for the reports that are being generated. Allows us to set it as a data type.
 class ReportData {
   //used to hold the average of each data section
   double overall;

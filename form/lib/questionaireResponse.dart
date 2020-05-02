@@ -1,8 +1,10 @@
+//used to create widget for the optional comment boxs. Works as a modular UI widget.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './customRadioButton.dart';
 import './questionaire.dart';
 
+//setup required for a stateful widget
 class Response extends StatefulWidget {
   final int index;
   final String outputText;
@@ -11,6 +13,7 @@ class Response extends StatefulWidget {
   _ResponseState createState() => _ResponseState(index, outputText);
 }
 
+//formatting for intake data and UI setup for the comment forms. This is returned to the page that calls it as a UI element.
 class _ResponseState extends State<Response> {
   int index;
   String outputText;

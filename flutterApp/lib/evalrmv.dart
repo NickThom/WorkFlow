@@ -19,7 +19,7 @@ class EvalRmvState extends State<EvalRmv> {
   Iterable<String> keysFromMap;
   String temp;
 
-  //fetch the evaluator list from the database
+  //fetch the evaluator list from the firbase database. Uses json decode to parse data
   Future<List<Eval>> evaluatorsList(Iterable<String> temp) async {
     const url = 'https://projectworkflow.firebaseio.com/Evaluators.json';
     final response = await http.get(url);
@@ -28,6 +28,7 @@ class EvalRmvState extends State<EvalRmv> {
     List<Eval> evaluatorList = new List();
     keysFromMap = fetchedEvaluatorsList.keys;
 
+//loops through returned map to set the list for useage.
     for (var v in valuesFromMap) {
       Eval test = Eval(
           firstName: v['firstName'],
@@ -36,12 +37,12 @@ class EvalRmvState extends State<EvalRmv> {
           weight: v['weight'],
           choice: false);
       evaluatorList
-          .add(test); //saves to this list, tested the output and recieved data
+          .add(test); 
     }
     return evaluatorList;
   }
 
-  //delete the evaluator from the database
+  //deletes the evaluator from the database
   Future<void> removeEvaluator(String key) async {
     String url =
         'https://projectworkflow.firebaseio.com/Evaluators/' + key + '.json';
@@ -49,6 +50,7 @@ class EvalRmvState extends State<EvalRmv> {
   }
 
   @override
+  //widget tree, this is all UI elements
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * .40,
@@ -68,12 +70,14 @@ class EvalRmvState extends State<EvalRmv> {
                         Icons.person,
                         color: Colors.red,
                       ),
+                      //sets text to value from database
                       title: Text(
                           '${snapshot.data[index].firstName} ${snapshot.data[index].lastName}      ${snapshot.data[index].email}'),
                       trailing: Icon(
                         Icons.arrow_right,
                         color: Colors.red,
                       ),
+                      //calls the popup menu on press of the button to show list elements
                       onTap: () async {
                         confirmationPopUp(
                             keysFromMap.elementAt(index),
@@ -85,6 +89,7 @@ class EvalRmvState extends State<EvalRmv> {
                 },
               ),
             );
+            //error validation
           } else if (snapshot.hasError) {
             return Text(
               "Error: ${snapshot.error}",
@@ -103,6 +108,7 @@ class EvalRmvState extends State<EvalRmv> {
     );
   }
 
+//code for the configuration of the popup menu. Holds on the UI elements to remove an evaluator
   void confirmationPopUp(String key, String firstName, String lastName) {
     SimpleDialog box = SimpleDialog(
       title: Text(

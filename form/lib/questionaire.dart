@@ -479,6 +479,7 @@ class MyHomePage extends StatelessWidget {
               ),
 
               //The submit button at the bottom of the page, aligned in the center
+              
               Align(
                 alignment: Alignment.bottomCenter,
                 child: RaisedButton(

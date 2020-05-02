@@ -16,6 +16,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.1.0 <3.0.0"
 
+# The following are dependencies used for our form. More info can be found on Flutter Dev
 dependencies:
   flutter:
     sdk: flutter

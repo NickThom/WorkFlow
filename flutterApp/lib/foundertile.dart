@@ -50,7 +50,6 @@ class FounderTileState extends State<FounderTile> {
             child: Padding(
               padding: const EdgeInsets.fromLTRB(18, 6, 18, 0),
               child: Card(
-                // margin: EdgeInsets.zero,
                 color: Colors.grey[600],
                 child: ListTile(
                   dense: true,
@@ -86,7 +85,7 @@ class FounderTileState extends State<FounderTile> {
                 color: Colors.grey[600],
                 child: ListTile(
                   dense: true,
-                  onTap: removeFounder, //add remove functionality here
+                  onTap: removeFounder,
                   leading: Icon(
                     Icons.business,
                     color: Colors.red,
@@ -118,7 +117,7 @@ class FounderTileState extends State<FounderTile> {
                 color: Colors.grey[600],
                 child: ListTile(
                   dense: true,
-                  onTap: editFounder, //add edit functionality here
+                  onTap: editFounder, 
                   leading: Icon(
                     Icons.business,
                     color: Colors.yellow,

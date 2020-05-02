@@ -1,6 +1,7 @@
+//template class for setting up the StartUpData data type.
 class StartUpData
 {
-  String name; //changed on 4/27/2020
+  String name;
   String email;
   String startUpName;
   double weight;
