@@ -7,15 +7,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import './questionaireResponse.dart';
 import 'package:flutterApp/widgets.dart';
-import 'package:flutterApp/webpageReport.dart';
 import 'package:intl/intl.dart';
+
+//Defines the stateful widget, allowing for updates and changes
 
 class Questionaire extends StatefulWidget {
   Questionaire({Key key, startup}) : super(key: key);
+
+  //override the current standard state into one that we can modify
   @override
   _QuestionaireState createState() => _QuestionaireState();
 }
 
+//Defines the state of the widget, allowing for the rebuild of the context
 class _QuestionaireState extends State<Questionaire> {
   @override
   Widget build(BuildContext context) {
@@ -26,13 +30,14 @@ class _QuestionaireState extends State<Questionaire> {
   }
 }
 
+//global variables allowing for easy passing of variables across multiple files
 String nameDropDown;
 String companyDropDown;
 
+//global map, this is where all of our data is stored from the questionaire
+//after being filled out, it gets pushed from here, into a map in the database
 Map map = {
   'pitchName': 'Pitch Name',
-  //'firstName': 'First Name',
-  //'lastName': 'Last Name',
   'evaluatorName': 'FirstLast',
   'email': 'Email',
   'productKnowledge': '(Optional) Product Knowledge: Empty',
@@ -54,18 +59,25 @@ Map map = {
   'month': 'month',
 };
 
+//function to record the values provided
 final List<int> recordedValues = new List(12);
 bool nullFlag = false;
 
+//function to set the values in the map at a particular index with a new value
+//particularly used for storing items in the list within the map
 void setValue(int index, int newValue) {
   map['storedValues'][index] = newValue;
 }
 
+//very similar to the previous function, however, this sets the map at destination
+//previous one was for storing in the list in the map
 void setOutput(String destination, String host) {
   map[destination] = host;
 }
 
+//Beginning of the new class definition
 class MyHomePage extends StatelessWidget {
+  //Text editing controllers used for gathering information from the user
   final feedbackForFounderController = TextEditingController();
   final internalFeedbackController = TextEditingController();
   final inputText = "Please rate from 1-5";
@@ -80,18 +92,22 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //MediaQuery used to get the size of the screen, which is then used later 
+    //to define the other sizes of items
     var screenSize = MediaQuery.of(context).size;
     map['pitchName'] = "Software StartUp";
 
+    //future is gathering a snapshot of what's currently avaiable in the database
+    //in this case, we're using it to simply store what we have
     Future<void> addAssessment() {
       const url = 'https://projectworkflow.firebaseio.com/Assessments.json';
       return http.post(
         url,
         body: json.encode(
           {
+            //All of the values created earlier in the map getting their own
+            //unique name in the database
             'pitchName': map['pitchName'],
-//            'firstName': map['firstName'],
-//            'lastName': map['lastName'],
             'evaluatorName': map['evaluatorName'],
             'email': map['email'],
             'productKnowledge': map['productKnowledge'],
@@ -115,7 +131,7 @@ class MyHomePage extends StatelessWidget {
         ),
       );
     }
-
+    //Top scaffold, following the color scheme provided by other team members 
     return Scaffold(
       backgroundColor: Colors.grey[350], //changed 4/4/2020
       appBar: AppBar(
@@ -125,6 +141,9 @@ class MyHomePage extends StatelessWidget {
           style: TextStyle(fontSize: 35),
         ),
       ),
+
+      //Single Child scroll view, used to allow the the screen to scroll considering our questionnaire
+      //was longer than the size of a screen.
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.fromLTRB(
@@ -134,12 +153,15 @@ class MyHomePage extends StatelessWidget {
             10,
           ),
           child: Column(
+            //determines the alignment of the column 
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              //startupNV picture
               Center(
                 child: MyImageWidget(),
               ),
+              //where the dropdown menu's are located, at the top
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -147,6 +169,8 @@ class MyHomePage extends StatelessWidget {
                   CompanyDropdown(),
                 ],
               ),
+              //This begins a lot of repetition, with putting in the "text"
+              //And the "Ratings"
               Row(
                 children: <Widget>[
                   Expanded(
@@ -175,6 +199,8 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ],
               ),
+
+              //So begins the repeition for a few lines...
               TextClass(
                 'Knowledge',
               ),
@@ -419,6 +445,8 @@ class MyHomePage extends StatelessWidget {
                   ),
                 ],
               ),
+
+              //Location for internal, and external feedback
               Container(
                 padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: TextClass(
@@ -449,23 +477,13 @@ class MyHomePage extends StatelessWidget {
                 maxLines: null,
                 textAlign: TextAlign.center,
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: RaisedButton(
-                  onPressed: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WebpageReport(),
-                      ),
-                    );
-                  },
-                  child: Text('Generate Report'),
-                ),
-              ),
+
+              //The submit button at the bottom of the page, aligned in the center
               Align(
                 alignment: Alignment.bottomCenter,
                 child: RaisedButton(
+                  //Command for once the button is pressed, which is to store the info in the database
+                  //Also check to make sure that every button has been pressed
                   onPressed: () {
                     for (var i in map['storedValues']) {
                       if (i == null) {
@@ -499,16 +517,8 @@ class MyHomePage extends StatelessWidget {
                           return AlertDialog(
                               // Retrieve the text the that user has entered by using the controller
                               content: 
-                              /*Text((() {
-                            if (map['productKnowledge'] != null) {
-                              return "product knowledge isn't empty";
-                            }
-                            if (map['productFeasability'] != null) {
-                              return "product feasability isn't empty";
-                            }
-                            return "neither are occupied";
-                          })())*/
-                              
+
+                              //The text that is displayed after the user clicks submit.                        
                               Text(
                                 "$nameDropDown, Thank you for evaluating $companyDropDown!"  +
                                 '\n' +
